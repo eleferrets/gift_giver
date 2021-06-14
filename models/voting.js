@@ -1,8 +1,13 @@
 const voting = {
-    pepperoni: [],
-    cheese: [],
-    hawaiian: [],
-}
+        pepperoni: [],
+        cheese: [],
+        hawaiian: [],
+    }
+    // Shorthand for getting the same key that we just returned
+const {
+    BadRequestError,
+    NotFoundError
+} = require("../utils/errors")
 
 // Models are fat while routes are kept lean
 class Voting {
@@ -20,11 +25,17 @@ class Voting {
     static async recordVote(pizzaName, user) {
         // increment the pizza name that was voted for
         // and return the final results
-        if (voting[pizzaName]) {
-            if (!voting[pizzaName].includes(user)) {
-                voting[pizzaName].push(user);
-            }
+        // Uses fast fails and no plain returns and much cleaner
+        if (!user) {
+            throw new BadRequestError("You must have a user in the request body to vote.")
         }
+        if (!voting[pizzaName]) {
+            throw new NotFoundError("That pizza name is not part of the poll.")
+        }
+        if (voting[pizzaName].includes(user)) {
+            throw new BadRequestError("That user has already voted for that pizza.")
+        }
+        voting[pizzaName].push(user);
 
         // Keep things flexible by just calling the function
         return Voting.tallyVotes();
