@@ -1,7 +1,7 @@
 const voting = {
-    pepperoni: 0,
-    cheese: 0,
-    hawaiian: 0,
+    pepperoni: [],
+    cheese: [],
+    hawaiian: [],
 }
 
 // Models are fat while routes are kept lean
@@ -9,14 +9,21 @@ class Voting {
     static async tallyVotes() {
         // handling calculating the final results for our poll
         // and return those results
-        return voting;
+        const votingResults = {
+            pepperoni: voting.pepperoni.length,
+            cheese: voting.cheese.length,
+            hawaiian: voting.hawaiian.length,
+        }
+        return votingResults;
     }
 
-    static async recordVote(pizzaName) {
+    static async recordVote(pizzaName, user) {
         // increment the pizza name that was voted for
         // and return the final results
-        if (voting[pizzaName] || voting[pizzaName] === 0) {
-            voting[pizzaName] += 1;
+        if (voting[pizzaName]) {
+            if (!voting[pizzaName].includes(user)) {
+                voting[pizzaName].push(user);
+            }
         }
 
         // Keep things flexible by just calling the function
