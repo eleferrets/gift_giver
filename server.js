@@ -1,16 +1,16 @@
 const express = require("express");
 const morgan = require("morgan");
 // This looks for .js files by default
-const votingRouter = require("./routes/voting");
+const giftRouter = require("./routes/gift");
 const {
     NotFoundError
 } = require("./utils/errors")
 
 const app = express();
 app.use(morgan("tiny"));
-// Send post requests that include post bodies
 app.use(express.json());
-app.use("/voting", votingRouter);
+// Send post requests that include post bodies
+app.use("/gift", giftRouter);
 
 
 // We need the response object, the request object, and then the next callback
